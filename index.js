@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const path = require('path');
 const {  newProduct, getProduct,getProducts } = require("./controllers/productController");
 const app = express();
 const helmet = require("helmet");
@@ -19,6 +20,7 @@ app.use(helmet());
 app.disable("x-powered-by");
 
 app.use(express.json());
+
 
 dbConnect();
 

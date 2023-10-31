@@ -1,5 +1,5 @@
 const Product = require("../models/product");
-const APIFilters = require("../utils/apiFilter");
+const APIFilters = require("../utils/APIFilter");
 const newProduct = async (req, res) => {
   try {
     let product = await Product.create(req.body);
@@ -25,31 +25,32 @@ const getProduct = async (req, res) => {
   }
 };
 
-const getProducts = async (req, res, next) => {
-  const resPerPage = 2;
-  const productsCount = await Product.countDocuments();
+const getProducts = async (req, res) => {
+  try {
+    const resPerPage = 2;
+    const productsCount = await Product.countDocuments();
 
-  let apiFilters = new APIFilters(
-    Product.find(),
-   req.query
-  )
-    .search()
-    .filter()
-    
-  let products = await apiFilters.query;
-  console.log(products);
-  const filteredProductsCount = products.length;
+    let apiFilters = new APIFilters(Product.find(), req.query)
+      .search()
+      .filter();
 
-  apiFilters.pagination(resPerPage);
+    let products = await apiFilters.query;
+    const filteredProductsCount = products.length;
 
-  products = await apiFilters.query.clone();
+    apiFilters.pagination(resPerPage);
 
-  res.status(200).json({
-    productsCount,
-    resPerPage,
-    filteredProductsCount,
-    products,
-  });
+    products = await apiFilters.query.clone();
+
+    res.status(200).json({
+      productsCount,
+      resPerPage,
+      filteredProductsCount,
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 module.exports = { newProduct, getProducts, getProduct };
