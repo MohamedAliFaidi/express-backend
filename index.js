@@ -32,5 +32,5 @@ app.get("/api/products/getproduct/:id", getProduct);
 
 
 app.listen(port, () => {
-  console.log(`Web_Server listening at http://localhost:${port}`);
+  console.log(`Listening at http://localhost:${port}`);
 });
