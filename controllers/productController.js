@@ -12,8 +12,8 @@ const newProduct = async (req, res) => {
 };
 
 const getProduct = async (req, res) => {
+
   const product = await Product.findById(req.params.id);
-  console.log(product);
   if (!product) {
     res.status(404).json({
       error: "Product not found.",
@@ -40,6 +40,7 @@ const getProducts = async (req, res) => {
     apiFilters.pagination(resPerPage);
 
     products = await apiFilters.query.clone();
+
 
     res.status(200).json({
       productsCount,

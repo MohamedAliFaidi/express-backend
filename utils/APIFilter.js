@@ -69,10 +69,6 @@ class APIFilters {
     const currentPage = Number(this.queryStr.page) || 1;
     const skip = resPerPage * (currentPage - 1);
 
-    console.log(
-      `Current Page: ${currentPage}, Skip: ${skip}, Limit: ${resPerPage}`
-    );
-
     this.query = this.query.limit(resPerPage).skip(skip);
     return this;
   }
