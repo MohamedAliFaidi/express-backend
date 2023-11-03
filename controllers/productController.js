@@ -1,8 +1,9 @@
-const Product = require("../models/product");
-const APIFilters = require("../utils/APIFilter");
+const Product = require('../models/product');
+const APIFilters = require('../utils/APIFilter');
+
 const newProduct = async (req, res) => {
   try {
-    let product = await Product.create(req.body);
+    const product = await Product.create(req.body);
     await product.save();
     return res.status(201).json(product);
   } catch (error) {
@@ -12,17 +13,15 @@ const newProduct = async (req, res) => {
 };
 
 const getProduct = async (req, res) => {
-
   const product = await Product.findById(req.params.id);
   if (!product) {
-    res.status(404).json({
-      error: "Product not found.",
-    });
-  } else {
-    return res.status(200).json({
-      product,
+    return res.status(404).json({
+      error: 'Product not found.',
     });
   }
+  return res.status(200).json({
+    product,
+  });
 };
 
 const getProducts = async (req, res) => {
@@ -30,10 +29,9 @@ const getProducts = async (req, res) => {
     const resPerPage = 2;
     const productsCount = await Product.countDocuments();
 
-    let apiFilters = new APIFilters(Product.find(), req.query)
+    const apiFilters = new APIFilters(Product.find(), req.query)
       .search()
       .filter();
-
     let products = await apiFilters.query;
     const filteredProductsCount = products.length;
 
@@ -41,8 +39,7 @@ const getProducts = async (req, res) => {
 
     products = await apiFilters.query.clone();
 
-
-    res.status(200).json({
+    return res.status(200).json({
       productsCount,
       resPerPage,
       filteredProductsCount,

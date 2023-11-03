@@ -9,26 +9,50 @@ class APIFilters {
       const keywordFilter = {
         name: {
           $regex: String(this.queryStr.keyword),
-          $options: "i",
+          $options: 'i',
         },
       };
       this.query = this.query.find({ ...keywordFilter });
+    } else if (this.queryStr.price && this.queryStr.price.$gte) {
+      const priceGte = parseFloat(this.queryStr.price.$gte);
+
+      const price = {
+        $gte: priceGte,
+      };
+
+      const priceFilter = {
+        price,
+      };
+      this.query = this.query.find({ ...priceFilter });
+    } else if (this.queryStr.price && this.queryStr.price.$lte) {
+      const priceLte = parseFloat(this.queryStr.price.$lte);
+
+      const price = {
+        $lte: priceLte,
+      };
+
+      const priceFilter = {
+        price,
+      };
+      this.query = this.query.find({ ...priceFilter });
     }
-    if (this.queryStr.price) {
-      const priceGte = parseFloat(this.queryStr.price.gte);
-      const priceLte = parseFloat(this.queryStr.price.lte);
+    if (
+      this.queryStr.price
+      && this.queryStr.price.$gte
+      && this.queryStr.price.$lte
+    ) {
+      const priceGte = parseFloat(this.queryStr.price.$gte);
+      const priceLte = parseFloat(this.queryStr.price.$lte);
 
-      if (!isNaN(priceGte) && !isNaN(priceLte)) {
-        const price = {
-          $gte: priceGte,
-          $lte: priceLte,
-        };
+      const price = {
+        $gte: priceGte,
+        $lte: priceLte,
+      };
 
-        const priceFilter = {
-          price,
-        };
-        this.query = this.query.find({ ...priceFilter });
-      }
+      const priceFilter = {
+        price,
+      };
+      this.query = this.query.find({ ...priceFilter });
     }
 
     return this;
@@ -37,34 +61,35 @@ class APIFilters {
   filter() {
     const queryCopy = { ...this.queryStr };
 
-    const removeFields = ["keyword", "page"];
+    const removeFields = ['keyword', 'page'];
     removeFields.forEach((el) => delete queryCopy[el]);
 
-    let output = {};
-    let prop = "";
+    const output = {};
+    let prop = '';
 
-    for (let key in queryCopy) {
+
+
+    Object.entries(queryCopy).forEach(([key, value]) => {
       if (!key.match(/\b(gt|gte|lt|lte)/)) {
-        output[key] = queryCopy[key];
+        output[key] = value;
       } else {
-        prop = key.split("[")[0];
-        console.log(prop);
-
-        let match = key?.match(/\[(.*)\]/);
-        let operator = match[1];
+        [prop] = key.split('[');
+        const match = key?.match(/\[(.*)\]/);
+        const operator = match[1];
 
         if (!output[prop]) {
           output[prop] = {};
         }
 
-        output[prop][`$${operator}`] = queryCopy[key];
+        output[prop][`$${operator}`] = value;
       }
-    }
+    });
     // { price: { $gte: 100, $lte: 1000 } }
 
     this.query = this.query.find(output);
     return this;
   }
+
   pagination(resPerPage) {
     const currentPage = Number(this.queryStr.page) || 1;
     const skip = resPerPage * (currentPage - 1);

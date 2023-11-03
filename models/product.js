@@ -1,17 +1,17 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please enter product name"],
+    required: [true, 'Please enter product name'],
   },
   description: {
     type: String,
-    required: [true, "Please enter product description"],
+    required: [true, 'Please enter product description'],
   },
   price: {
     type: Number,
-    required: [true, "Please enter product price"],
+    required: [true, 'Please enter product price'],
   },
   images: [
     {
@@ -26,31 +26,31 @@ const productSchema = new mongoose.Schema({
 
   category: {
     type: String,
-    required: [true, "Please enter product category"],
+    required: [true, 'Please enter product category'],
     enum: {
       values: [
-        "Electronics",
-        "Cameras",
-        "Laptops",
-        "Accessories",
-        "Headphones",
-        "Sports",
+        'Electronics',
+        'Cameras',
+        'Laptops',
+        'Accessories',
+        'Headphones',
+        'Sports',
       ],
-      message: "Please select correct category",
+      message: 'Please select correct category',
     },
   },
   seller: {
     type: String,
-    required: [true, "Please enter product seller"],
+    required: [true, 'Please enter product seller'],
   },
   stock: {
     type: Number,
-    required: [true, "Please enter product stock"],
+    required: [true, 'Please enter product stock'],
   },
   ratings: {
     type: Number,
     default: 0,
-    
+
   },
   reviews: [
     {
@@ -76,9 +76,5 @@ const productSchema = new mongoose.Schema({
 
 // e request body exemple fo the schema above:
 
-
-
-
-  module.exports =  mongoose.models.Product ||
-  mongoose.model("Product", productSchema);
-
+module.exports = mongoose.models.Product
+  || mongoose.model('Product', productSchema);
