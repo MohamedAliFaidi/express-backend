@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 const cors = require("cors");
+const verify = require("./verify");
 const compression = require("compression");
 const {
   newProduct,
@@ -32,13 +33,13 @@ app.use(express.json());
 
 dbConnect();
 
-app.get("/", (req, res) => {
- return  res.json({
+app.get("/", verify, (req, res) => {
+  return res.json({
     rahtech: "Welcome to Rahtech api",
- });
+  });
 });
 
-app.get("/api/products", getProducts);
+app.get("/api/products", verify, getProducts);
 
 app.post("/api/products/create", newProduct);
 
