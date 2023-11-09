@@ -26,7 +26,7 @@ const getProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
   try {
-    const resPerPage = 2;
+    const resPerPage = parseInt(req.headers.resperpage) || 5;
     const productsCount = await Product.countDocuments();
 
     const apiFilters = new APIFilters(Product.find(), req.query)
