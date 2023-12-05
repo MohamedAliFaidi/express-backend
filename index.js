@@ -34,7 +34,7 @@ app.use(express.json());
 dbConnect();
 
 app.get("/", verify, (req, res) => {
-  console.log(req)
+  console.log(req.connection.remoteAddress)
   return res.json({
     rahtech: "Welcome to Rahtech api",
   });
