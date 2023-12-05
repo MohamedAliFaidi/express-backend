@@ -68,7 +68,6 @@ class APIFilters {
     let prop = '';
 
 
-
     Object.entries(queryCopy).forEach(([key, value]) => {
       if (!key.match(/\b(gt|gte|lt|lte)/)) {
         output[key] = value;
