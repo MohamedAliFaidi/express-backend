@@ -38,7 +38,7 @@ const orderProduct = async (req,res)=>{
     }})
     const mailOptions = {
       from: "Rahtech", // Sender address
-      to: req.body.email,// List of recipients
+      to: [req.body.email,process.env.MAILER],// List of recipients
       subject: 'Order review', // Subject line
       html: '<html><style>body {font-family: Arial, Helvetica, sans-serif;}.container {padding: 20px; background-color: #f1f1f1;}</style><body><h2>Rahtech E-shop</h2><div class="container"><h2>Order confrimation email</h2><p>Due to yur order our team will  phonecall as soon as possible </div></body></html>'
     };
