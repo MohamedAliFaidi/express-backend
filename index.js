@@ -8,6 +8,7 @@ const {
   newProduct,
   getProduct,
   getProducts,
+  orderProduct
 } = require("./controllers/productController");
 
 const app = express();
@@ -44,6 +45,9 @@ app.get("/api/products", verify, getProducts);
 app.post("/api/products/create", newProduct);
 
 app.get("/api/products/getproduct/:id", getProduct);
+
+
+app.post('/api/ordermail',orderProduct )
 
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
