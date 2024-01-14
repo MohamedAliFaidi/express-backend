@@ -27,8 +27,6 @@ const getProduct = async (req, res) => {
 };
 
 const orderProduct = async (req,res)=>{
-  console.log(process.env.MAIL_PASS)
-  console.log((process.env.MAILER))
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
