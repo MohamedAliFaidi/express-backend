@@ -46,6 +46,74 @@ app.post("/api/products/create", newProduct);
 
 app.get("/api/products/getproduct/:id", getProduct);
 
+app.get("/api/isemail/:email", async (req,res) => {
+  function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+  
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters.charAt(randomIndex);
+    }
+  
+    return result;
+  }
+  
+  // Example: Generate a random string of length 10
+  const randomString = generateRandomString(10);
+  const email = req.params.email;
+  const Prom = require('./models/promise')
+  const promise = await Prom.create({email:email , 
+        code : randomString});
+        await promise.save();
+        console.log(promise);
+
+        const nodemailer = require('nodemailer')
+
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    auth: {
+      user: "mouhammedalifaidi@gmail.com", // Your Gmail email address
+      pass:"resr fbvr fiao goil"// Your Gmail password or App Password
+    }})
+    const mailOptions = {
+      from: "Rahtech", // Sender address
+      to: email,// List of recipients
+      subject: 'Email verification', // Subject line
+      html: `
+      <p>Hello there!</p>
+      <p>Your verification code is: <strong>${randomString}</strong></p>
+      <p>Click the button below to verify your email:</p>
+      <a href="http://localhost:3000/register?code=${randomString}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none;">Verify Email</a>
+    `
+    };
+
+
+     //Send the email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error)
+      return res.status(500).send(`Error: ${error.message}`);
+    }
+    console.log(info)
+      res.status(200);
+      
+    });
+    
+     res.json({
+      message: "Email sent"
+    });
+  
+
+
+    
+
+
+
+});
+
 
 app.post('/api/ordermail',orderProduct )
 
