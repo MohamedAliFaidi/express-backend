@@ -99,7 +99,7 @@ app.post("/api/isemail/", async (req,res) => {
 
 
      //Send the email
-  transporter.sendMail(mailOptions, (error, info) => {
+  await transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error)
       return res.status(500).send(`Error: ${error.message}`);
