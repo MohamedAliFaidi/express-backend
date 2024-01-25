@@ -33,7 +33,7 @@ const orderProduct = async (req,res)=>{
     port: 587,
     auth: {
       user: "mouhammedalifaidi@gmail.com", // Your Gmail email address
-      pass:"resr fbvr fiao goil"// Your Gmail password or App Password
+      pass:"znbp lrxb pnhc eote"// Your Gmail password or App Password
     }})
     const mailOptions = {
       from: "Rahtech", // Sender address
